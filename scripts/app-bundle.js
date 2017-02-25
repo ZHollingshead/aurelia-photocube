@@ -104,6 +104,9 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
         PhotoCube.prototype.created = function () {
             this.MouseTracker = new MouseTracker();
             this.CameraPositions = new CameraTracker();
+            this.Renderer = new THREE.WebGLRenderer();
+            this.Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+            this.Scene = new THREE.Scene();
         };
         PhotoCube.prototype.bind = function () {
         };
@@ -116,14 +119,11 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
         };
         PhotoCube.prototype.InitPhotocube = function () {
             var _this = this;
-            this.Renderer = new THREE.WebGLRenderer();
             this.Renderer.setSize(window.innerWidth, window.innerHeight);
             this.ViewPort.appendChild(this.Renderer.domElement);
-            this.Scene = new THREE.Scene();
-            this.Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
             this.Camera.target = new THREE.Vector3(0, 0, 0);
             var cube = new THREE.BoxGeometry(100, 100, 100);
-            cube.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+            cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
             var loader = new THREE.CubeTextureLoader();
             loader.setPath(this.panoramicSetPath + "/");
             var textureCube = loader.load([

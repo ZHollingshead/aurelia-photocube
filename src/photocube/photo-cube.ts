@@ -39,6 +39,10 @@ export class PhotoCube {
   public created() {
     this.MouseTracker = new MouseTracker();
     this.CameraPositions = new CameraTracker();
+
+    this.Renderer = new THREE.WebGLRenderer();
+    this.Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+    this.Scene = new THREE.Scene();
   }
 
   public bind() {
@@ -58,26 +62,22 @@ export class PhotoCube {
   }
 
   public InitPhotocube() {
-    this.Renderer = new THREE.WebGLRenderer();
 
     this.Renderer.setSize(window.innerWidth, window.innerHeight);
 
     this.ViewPort.appendChild(this.Renderer.domElement);
 
-    // creating a new scene
-    this.Scene = new THREE.Scene();
-
     // adding a camera
-    this.Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     this.Camera.target = new THREE.Vector3(0, 0, 0);
 
     // creation of a big sphere geometry
     var cube = new THREE.BoxGeometry(100, 100, 100);
-    cube.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
 
     // creation of the sphere material
 
     var loader = new THREE.CubeTextureLoader();
+
     loader.setPath(`${this.panoramicSetPath}/`);
 
     var textureCube = loader.load([
@@ -111,7 +111,6 @@ export class PhotoCube {
   public renderLoop = () => {
     requestAnimationFrame(this.renderLoop);
 
-
     // prevent from looking past feet
     this.CameraPositions.lon = Math.max(-85, Math.min(85, this.CameraPositions.lon));
 
@@ -123,7 +122,6 @@ export class PhotoCube {
 
     // calling again render function
     this.Renderer.render(this.Scene, this.Camera);
-
   }
 
   public mouseDownEvent = (event) => {
