@@ -1,5 +1,6 @@
 import THREE = require("three");
 import { bindable } from 'aurelia-templating';
+import { bindingMode } from 'aurelia-binding';
 import { DOM } from 'aurelia-pal';
 import { inject } from 'aurelia-dependency-injection';
 
@@ -21,9 +22,14 @@ class CameraTracker {
 }
 
 export class PhotoCube {
-  @bindable panoramicSetName;
-  @bindable panoramicSetPath;
-  @bindable panoramicImageFormat;
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public panoramicSetName: String;
+  
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public panoramicSetPath: String;
+  
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public panoramicImageFormat: String;
 
   private Camera: THREE.Camera;
   private Cube: THREE.BoxGeometry;

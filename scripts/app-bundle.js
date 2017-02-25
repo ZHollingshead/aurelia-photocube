@@ -55,7 +55,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define('photocube/photo-cube',["require", "exports", "three", "aurelia-templating"], function (require, exports, THREE, aurelia_templating_1) {
+define('photocube/photo-cube',["require", "exports", "three", "aurelia-templating", "aurelia-binding"], function (require, exports, THREE, aurelia_templating_1, aurelia_binding_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var MouseTracker = (function () {
@@ -146,16 +146,16 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
         return PhotoCube;
     }());
     __decorate([
-        aurelia_templating_1.bindable,
-        __metadata("design:type", Object)
+        aurelia_templating_1.bindable({ defaultBindingMode: aurelia_binding_1.bindingMode.twoWay }),
+        __metadata("design:type", String)
     ], PhotoCube.prototype, "panoramicSetName", void 0);
     __decorate([
-        aurelia_templating_1.bindable,
-        __metadata("design:type", Object)
+        aurelia_templating_1.bindable({ defaultBindingMode: aurelia_binding_1.bindingMode.twoWay }),
+        __metadata("design:type", String)
     ], PhotoCube.prototype, "panoramicSetPath", void 0);
     __decorate([
-        aurelia_templating_1.bindable,
-        __metadata("design:type", Object)
+        aurelia_templating_1.bindable({ defaultBindingMode: aurelia_binding_1.bindingMode.twoWay }),
+        __metadata("design:type", String)
     ], PhotoCube.prototype, "panoramicImageFormat", void 0);
     exports.PhotoCube = PhotoCube;
 });
