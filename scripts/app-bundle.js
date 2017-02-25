@@ -108,31 +108,28 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             this.Renderer = new THREE.WebGLRenderer();
             this.Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
             this.Scene = new THREE.Scene();
+            this.Cube = new THREE.BoxGeometry(100, 100, 100);
         };
         PhotoCube.prototype.bind = function () {
-        };
-        PhotoCube.prototype.attached = function () {
-            this.InitPhotocube();
-        };
-        PhotoCube.prototype.detached = function () {
-        };
-        PhotoCube.prototype.unbind = function () {
-        };
-        PhotoCube.prototype.InitPhotocube = function () {
-            var _this = this;
             this.Renderer.setSize(window.innerWidth, window.innerHeight);
             this.ViewPort.appendChild(this.Renderer.domElement);
             this.Camera.target = new THREE.Vector3(0, 0, 0);
-            var cube = new THREE.BoxGeometry(100, 100, 100);
-            cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+            this.Cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+        };
+        PhotoCube.prototype.attached = function () {
+            var _this = this;
             var textureCube = this.LoadCubeTextures();
             var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
-            var sphereMesh = new THREE.Mesh(cube, material);
+            var sphereMesh = new THREE.Mesh(this.Cube, material);
             this.Scene.add(sphereMesh);
             this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
             document.addEventListener("mousemove", this.MouseMoveEvent, false);
             document.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
             this.RenderLoop();
+        };
+        PhotoCube.prototype.detached = function () {
+        };
+        PhotoCube.prototype.unbind = function () {
         };
         PhotoCube.prototype.LoadCubeTextures = function () {
             var loader = new THREE.CubeTextureLoader();

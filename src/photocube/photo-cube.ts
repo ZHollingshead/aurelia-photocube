@@ -26,8 +26,10 @@ export class PhotoCube {
   @bindable panoramicImageFormat;
 
   private Camera: THREE.Camera;
+  private Cube: THREE.BoxGeometry;
   private Scene: THREE.Scene;
   private Renderer: THREE.Renderer;
+  private Material: THREE.MeshBasicMaterial;
   private Mesh: THREE.Mesh;
   private ViewPort: HTMLDivElement;
 
@@ -41,14 +43,29 @@ export class PhotoCube {
     this.Renderer = new THREE.WebGLRenderer();
     this.Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     this.Scene = new THREE.Scene();
+    this.Cube = new THREE.BoxGeometry(100, 100, 100);
   }
 
   public bind() {
-
+    this.Renderer.setSize(window.innerWidth, window.innerHeight);
+    this.ViewPort.appendChild(this.Renderer.domElement);
+    this.Camera.target = new THREE.Vector3(0, 0, 0);
+    this.Cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
   }
 
   public attached() {
-    this.InitPhotocube();
+    var textureCube = this.LoadCubeTextures();
+
+    var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
+
+    var sphereMesh = new THREE.Mesh(this.Cube, material);
+    this.Scene.add(sphereMesh);
+
+    this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
+    document.addEventListener("mousemove", this.MouseMoveEvent, false);
+    document.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
+
+    this.RenderLoop();
   }
 
   public detached() {
@@ -57,31 +74,6 @@ export class PhotoCube {
 
   public unbind() {
 
-  }
-
-  public InitPhotocube() {
-
-    this.Renderer.setSize(window.innerWidth, window.innerHeight);
-
-    this.ViewPort.appendChild(this.Renderer.domElement);
-
-    this.Camera.target = new THREE.Vector3(0, 0, 0);
-
-    var cube = new THREE.BoxGeometry(100, 100, 100);
-    cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
-
-    var textureCube = this.LoadCubeTextures();
-
-    var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
-
-    var sphereMesh = new THREE.Mesh(cube, material);
-    this.Scene.add(sphereMesh);
-
-    this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
-    document.addEventListener("mousemove", this.MouseMoveEvent, false);
-    document.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
-
-    this.RenderLoop();
   }
 
   public LoadCubeTextures() {
