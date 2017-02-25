@@ -27,10 +27,10 @@ export class PhotoCube {
 
   private Camera: THREE.Camera;
   private Cube: THREE.BoxGeometry;
-  private Scene: THREE.Scene;
-  private Renderer: THREE.Renderer;
   private Material: THREE.MeshBasicMaterial;
   private Mesh: THREE.Mesh;
+  private Renderer: THREE.Renderer;
+  private Scene: THREE.Scene;
   private ViewPort: HTMLDivElement;
 
   private MouseTracker: MouseTracker;
@@ -99,7 +99,7 @@ export class PhotoCube {
     this.Camera.target.x = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(this.CameraPositions.lat));
     this.Camera.target.y = Math.cos(THREE.Math.degToRad(90 - this.CameraPositions.lon));
     this.Camera.target.z = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(this.CameraPositions.lat));
-    
+
     this.Camera.lookAt(this.Camera.target);
 
     this.Renderer.render(this.Scene, this.Camera);
