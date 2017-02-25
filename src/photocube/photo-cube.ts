@@ -34,7 +34,7 @@ export class PhotoCube {
   private ViewPort: HTMLDivElement;
 
   private MouseTracker: MouseTracker;
-  private CameraPositions: any;
+  private CameraPositions: CameraTracker;
 
   public created() {
     this.MouseTracker = new MouseTracker();
@@ -64,12 +64,19 @@ export class PhotoCube {
 
     this.ViewPort.appendChild(this.Renderer.domElement);
 
+    // creating a new scene
     this.Scene = new THREE.Scene();
 
+    // adding a camera
     this.Camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     this.Camera.target = new THREE.Vector3(0, 0, 0);
+
+    // creation of a big sphere geometry
     var cube = new THREE.BoxGeometry(100, 100, 100);
     cube.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+
+    // creation of the sphere material
+
     var loader = new THREE.CubeTextureLoader();
     loader.setPath(`${this.panoramicSetPath}/`);
 
@@ -83,8 +90,13 @@ export class PhotoCube {
     ]);
 
     var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
+
+
+    // geometry + material = mesh (actual object)
     var sphereMesh = new THREE.Mesh(cube, material);
     this.Scene.add(sphereMesh);
+
+    // listeners
     document.addEventListener("mousedown", this.mouseDownEvent, false);
     document.addEventListener("mousemove", this.mouseMoveEvent, false);
     document.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
@@ -100,11 +112,16 @@ export class PhotoCube {
     requestAnimationFrame(this.renderLoop);
 
 
+    // prevent from looking past feet
     this.CameraPositions.lon = Math.max(-85, Math.min(85, this.CameraPositions.lon));
+
+    // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
     this.Camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(this.CameraPositions.lat));
     this.Camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - this.CameraPositions.lon));
     this.Camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(this.CameraPositions.lat));
     this.Camera.lookAt(this.Camera.target);
+
+    // calling again render function
     this.Renderer.render(this.Scene, this.Camera);
 
   }
