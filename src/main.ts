@@ -1,4 +1,4 @@
-import {Aurelia} from 'aurelia-framework'
+import { Aurelia } from 'aurelia-framework'
 import environment from './environment';
 
 //Configure Bluebird Promises.
@@ -11,6 +11,9 @@ import environment from './environment';
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
+    .globalResources([
+      './photocube/photo-cube'
+    ])
     .feature('resources');
 
   if (environment.debug) {

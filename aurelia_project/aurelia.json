@@ -111,6 +111,11 @@
           "aurelia-templating-binding",
           "text",
           {
+            "name": "three",
+            "path": "../node_modules/three/build/",
+            "main": "three"
+          },
+          {
             "name": "aurelia-templating-resources",
             "path": "../node_modules/aurelia-templating-resources/dist/amd",
             "main": "aurelia-templating-resources"
