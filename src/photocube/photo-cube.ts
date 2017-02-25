@@ -104,9 +104,10 @@ export class PhotoCube {
 
     this.CameraPositions.lon = Math.max(-85, Math.min(85, this.CameraPositions.lon));
 
-    this.Camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(this.CameraPositions.lat));
-    this.Camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - this.CameraPositions.lon));
-    this.Camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(this.CameraPositions.lat));
+    this.Camera.target.x = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(this.CameraPositions.lat));
+    this.Camera.target.y = Math.cos(THREE.Math.degToRad(90 - this.CameraPositions.lon));
+    this.Camera.target.z = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(this.CameraPositions.lat));
+    
     this.Camera.lookAt(this.Camera.target);
 
     this.Renderer.render(this.Scene, this.Camera);

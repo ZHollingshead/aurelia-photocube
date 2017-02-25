@@ -1,6 +1,7 @@
 <template>
+  <input value.bind="imageText" value="2017_FreddysVR"/>
   <photo-cube value="hi" 
-              panoramic-set-name="2017_FreddysVR"
+              panoramic-set-name.bind="imageText"
               panoramic-set-path="images"
               panoramic-image-format="jpg">
   </photo-cube>

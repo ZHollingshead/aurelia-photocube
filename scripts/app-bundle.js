@@ -4,6 +4,7 @@ define('app',["require", "exports"], function (require, exports) {
     var App = (function () {
         function App() {
             this.message = 'Hello World!';
+            this.imageText = '2017_FreddysVR';
         }
         return App;
     }());
@@ -80,9 +81,9 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             this.RenderLoop = function () {
                 requestAnimationFrame(_this.RenderLoop);
                 _this.CameraPositions.lon = Math.max(-85, Math.min(85, _this.CameraPositions.lon));
-                _this.Camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - _this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(_this.CameraPositions.lat));
-                _this.Camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - _this.CameraPositions.lon));
-                _this.Camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - _this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(_this.CameraPositions.lat));
+                _this.Camera.target.x = Math.sin(THREE.Math.degToRad(90 - _this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(_this.CameraPositions.lat));
+                _this.Camera.target.y = Math.cos(THREE.Math.degToRad(90 - _this.CameraPositions.lon));
+                _this.Camera.target.z = Math.sin(THREE.Math.degToRad(90 - _this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(_this.CameraPositions.lat));
                 _this.Camera.lookAt(_this.Camera.target);
                 _this.Renderer.render(_this.Scene, _this.Camera);
             };
@@ -128,7 +129,7 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
             var sphereMesh = new THREE.Mesh(cube, material);
             this.Scene.add(sphereMesh);
-            document.addEventListener("mousedown", this.MouseDownEvent, false);
+            this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
             document.addEventListener("mousemove", this.MouseMoveEvent, false);
             document.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
             this.RenderLoop();
@@ -170,6 +171,6 @@ define('resources/index',["require", "exports"], function (require, exports) {
     exports.configure = configure;
 });
 
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <photo-cube value=\"hi\" \n              panoramic-set-name=\"2017_FreddysVR\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\">\n  </photo-cube>\n</template>\n"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <input value.bind=\"imageText\" value=\"2017_FreddysVR\"/>\n  <photo-cube value=\"hi\" \n              panoramic-set-name.bind=\"imageText\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\">\n  </photo-cube>\n</template>\n"; });
 define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <section>\n        <h2>aurelia cube</h2>\n        <div ref=\"ViewPort\" style=\"width: 500px; height: 400px;\"></div>\n    </section>\n\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map
