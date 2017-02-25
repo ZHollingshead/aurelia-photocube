@@ -65,10 +65,8 @@ export class PhotoCube {
 
     this.ViewPort.appendChild(this.Renderer.domElement);
 
-    // adding a camera
     this.Camera.target = new THREE.Vector3(0, 0, 0);
 
-    // creation of a big sphere geometry
     var cube = new THREE.BoxGeometry(100, 100, 100);
     cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
 
@@ -76,13 +74,10 @@ export class PhotoCube {
 
     var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
 
-
-    // geometry + material = mesh (actual object)
     var sphereMesh = new THREE.Mesh(cube, material);
     this.Scene.add(sphereMesh);
 
-    // listeners
-    document.addEventListener("mousedown", this.MouseDownEvent, false);
+    this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
     document.addEventListener("mousemove", this.MouseMoveEvent, false);
     document.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
 
@@ -107,16 +102,13 @@ export class PhotoCube {
   public RenderLoop = () => {
     requestAnimationFrame(this.RenderLoop);
 
-    // prevent from looking past feet
     this.CameraPositions.lon = Math.max(-85, Math.min(85, this.CameraPositions.lon));
 
-    // moving the camera according to current latitude (vertical movement) and longitude (horizontal movement)
     this.Camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(this.CameraPositions.lat));
     this.Camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - this.CameraPositions.lon));
     this.Camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(this.CameraPositions.lat));
     this.Camera.lookAt(this.Camera.target);
 
-    // calling again render function
     this.Renderer.render(this.Scene, this.Camera);
   }
 
