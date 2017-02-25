@@ -21,8 +21,6 @@ class CameraTracker {
 }
 
 export class PhotoCube {
-  @bindable value;
-
   @bindable panoramicSetName;
   @bindable panoramicSetPath;
   @bindable panoramicImageFormat;
@@ -102,10 +100,6 @@ export class PhotoCube {
     document.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
 
     this.renderLoop();
-  }
-
-  valueChanged(newValue, oldValue) {
-
   }
 
   public renderLoop = () => {

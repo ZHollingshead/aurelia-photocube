@@ -142,14 +142,8 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             document.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
             this.renderLoop();
         };
-        PhotoCube.prototype.valueChanged = function (newValue, oldValue) {
-        };
         return PhotoCube;
     }());
-    __decorate([
-        aurelia_templating_1.bindable,
-        __metadata("design:type", Object)
-    ], PhotoCube.prototype, "value", void 0);
     __decorate([
         aurelia_templating_1.bindable,
         __metadata("design:type", Object)
@@ -174,5 +168,5 @@ define('resources/index',["require", "exports"], function (require, exports) {
 });
 
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <photo-cube value=\"hi\" \n              panoramic-set-name=\"2017_FreddysVR\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\">\n  </photo-cube>\n</template>\n"; });
-define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <h1>${value}</h1>\n\n    <section>\n        <h2>aurelia cube</h2>\n        <div ref=\"ViewPort\" style=\"width: 500px; height: 400px;\"></div>\n    </section>\n\n</template>\n"; });
+define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <section>\n        <h2>aurelia cube</h2>\n        <div ref=\"ViewPort\" style=\"width: 500px; height: 400px;\"></div>\n    </section>\n\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map
