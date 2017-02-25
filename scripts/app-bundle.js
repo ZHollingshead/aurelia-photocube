@@ -77,8 +77,8 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
     var PhotoCube = (function () {
         function PhotoCube() {
             var _this = this;
-            this.renderLoop = function () {
-                requestAnimationFrame(_this.renderLoop);
+            this.RenderLoop = function () {
+                requestAnimationFrame(_this.RenderLoop);
                 _this.CameraPositions.lon = Math.max(-85, Math.min(85, _this.CameraPositions.lon));
                 _this.Camera.target.x = 500 * Math.sin(THREE.Math.degToRad(90 - _this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(_this.CameraPositions.lat));
                 _this.Camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - _this.CameraPositions.lon));
@@ -86,7 +86,7 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
                 _this.Camera.lookAt(_this.Camera.target);
                 _this.Renderer.render(_this.Scene, _this.Camera);
             };
-            this.mouseDownEvent = function (event) {
+            this.MouseDownEvent = function (event) {
                 event.preventDefault();
                 _this.MouseTracker.mouseDown = true;
                 _this.MouseTracker.x = event.clientX;
@@ -94,7 +94,7 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
                 _this.MouseTracker.lat = _this.CameraPositions.lat;
                 _this.MouseTracker.lon = _this.CameraPositions.lon;
             };
-            this.mouseMoveEvent = function (event) {
+            this.MouseMoveEvent = function (event) {
                 if (_this.MouseTracker.mouseDown) {
                     _this.CameraPositions.lat = (_this.MouseTracker.x - event.clientX) * 0.1 + _this.MouseTracker.lat;
                     _this.CameraPositions.lon = (event.clientY - _this.MouseTracker.y) * 0.1 + _this.MouseTracker.lon;
@@ -124,9 +124,19 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             this.Camera.target = new THREE.Vector3(0, 0, 0);
             var cube = new THREE.BoxGeometry(100, 100, 100);
             cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
+            var textureCube = this.LoadCubeTextures();
+            var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
+            var sphereMesh = new THREE.Mesh(cube, material);
+            this.Scene.add(sphereMesh);
+            document.addEventListener("mousedown", this.MouseDownEvent, false);
+            document.addEventListener("mousemove", this.MouseMoveEvent, false);
+            document.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
+            this.RenderLoop();
+        };
+        PhotoCube.prototype.LoadCubeTextures = function () {
             var loader = new THREE.CubeTextureLoader();
             loader.setPath(this.panoramicSetPath + "/");
-            var textureCube = loader.load([
+            return loader.load([
                 this.panoramicSetName + "_Back." + this.panoramicImageFormat,
                 this.panoramicSetName + "_Front." + this.panoramicImageFormat,
                 this.panoramicSetName + "_Bottom." + this.panoramicImageFormat,
@@ -134,13 +144,6 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
                 this.panoramicSetName + "_Left." + this.panoramicImageFormat,
                 this.panoramicSetName + "_Right." + this.panoramicImageFormat
             ]);
-            var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
-            var sphereMesh = new THREE.Mesh(cube, material);
-            this.Scene.add(sphereMesh);
-            document.addEventListener("mousedown", this.mouseDownEvent, false);
-            document.addEventListener("mousemove", this.mouseMoveEvent, false);
-            document.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
-            this.renderLoop();
         };
         return PhotoCube;
     }());

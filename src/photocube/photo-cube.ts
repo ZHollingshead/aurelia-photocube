@@ -72,20 +72,7 @@ export class PhotoCube {
     var cube = new THREE.BoxGeometry(100, 100, 100);
     cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
 
-    // creation of the sphere material
-
-    var loader = new THREE.CubeTextureLoader();
-
-    loader.setPath(`${this.panoramicSetPath}/`);
-
-    var textureCube = loader.load([
-      `${this.panoramicSetName}_Back.${this.panoramicImageFormat}`,
-      `${this.panoramicSetName}_Front.${this.panoramicImageFormat}`,
-      `${this.panoramicSetName}_Bottom.${this.panoramicImageFormat}`,
-      `${this.panoramicSetName}_Top.${this.panoramicImageFormat}`,
-      `${this.panoramicSetName}_Left.${this.panoramicImageFormat}`,
-      `${this.panoramicSetName}_Right.${this.panoramicImageFormat}`
-    ]);
+    var textureCube = this.LoadCubeTextures();
 
     var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
 
@@ -95,15 +82,30 @@ export class PhotoCube {
     this.Scene.add(sphereMesh);
 
     // listeners
-    document.addEventListener("mousedown", this.mouseDownEvent, false);
-    document.addEventListener("mousemove", this.mouseMoveEvent, false);
+    document.addEventListener("mousedown", this.MouseDownEvent, false);
+    document.addEventListener("mousemove", this.MouseMoveEvent, false);
     document.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
 
-    this.renderLoop();
+    this.RenderLoop();
   }
 
-  public renderLoop = () => {
-    requestAnimationFrame(this.renderLoop);
+  public LoadCubeTextures() {
+    let loader = new THREE.CubeTextureLoader();
+
+    loader.setPath(`${this.panoramicSetPath}/`);
+
+    return loader.load([
+      `${this.panoramicSetName}_Back.${this.panoramicImageFormat}`,
+      `${this.panoramicSetName}_Front.${this.panoramicImageFormat}`,
+      `${this.panoramicSetName}_Bottom.${this.panoramicImageFormat}`,
+      `${this.panoramicSetName}_Top.${this.panoramicImageFormat}`,
+      `${this.panoramicSetName}_Left.${this.panoramicImageFormat}`,
+      `${this.panoramicSetName}_Right.${this.panoramicImageFormat}`
+    ]);
+  }
+
+  public RenderLoop = () => {
+    requestAnimationFrame(this.RenderLoop);
 
     // prevent from looking past feet
     this.CameraPositions.lon = Math.max(-85, Math.min(85, this.CameraPositions.lon));
@@ -118,7 +120,7 @@ export class PhotoCube {
     this.Renderer.render(this.Scene, this.Camera);
   }
 
-  public mouseDownEvent = (event) => {
+  public MouseDownEvent = (event) => {
 
     event.preventDefault();
 
@@ -132,7 +134,7 @@ export class PhotoCube {
 
   }
 
-  public mouseMoveEvent = (event) => {
+  public MouseMoveEvent = (event) => {
 
     if (this.MouseTracker.mouseDown) {
       this.CameraPositions.lat = (this.MouseTracker.x - event.clientX) * 0.1 + this.MouseTracker.lat;
