@@ -1,28 +1,8 @@
-import { Aurelia } from 'aurelia-framework'
-import environment from './environment';
+import { FrameworkConfiguration } from 'aurelia-framework'
 
-//Configure Bluebird Promises.
-(<any>Promise).config({
-  warnings: {
-    wForgottenReturn: false
-  }
-});
-
-export function configure(aurelia: Aurelia) {
-  aurelia.use
-    .standardConfiguration()
+export function configure(config: FrameworkConfiguration) {
+    config
     .globalResources([
       './photocube/photo-cube'
-    ])
-    .feature('resources');
-
-  if (environment.debug) {
-    aurelia.use.developmentLogging();
-  }
-
-  if (environment.testing) {
-    aurelia.use.plugin('aurelia-testing');
-  }
-
-  aurelia.start().then(() => aurelia.setRoot());
+    ]);
 }

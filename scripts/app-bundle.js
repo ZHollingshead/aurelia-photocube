@@ -1,16 +1,3 @@
-define('app',["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var App = (function () {
-        function App() {
-            this.message = 'Hello World!';
-            this.imageText = '2017_FreddysVR';
-        }
-        return App;
-    }());
-    exports.App = App;
-});
-
 define('environment',["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -20,28 +7,14 @@ define('environment',["require", "exports"], function (require, exports) {
     };
 });
 
-define('main',["require", "exports", "./environment"], function (require, exports, environment_1) {
+define('main',["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    Promise.config({
-        warnings: {
-            wForgottenReturn: false
-        }
-    });
-    function configure(aurelia) {
-        aurelia.use
-            .standardConfiguration()
+    function configure(config) {
+        config
             .globalResources([
             './photocube/photo-cube'
-        ])
-            .feature('resources');
-        if (environment_1.default.debug) {
-            aurelia.use.developmentLogging();
-        }
-        if (environment_1.default.testing) {
-            aurelia.use.plugin('aurelia-testing');
-        }
-        aurelia.start().then(function () { return aurelia.setRoot(); });
+        ]);
     }
     exports.configure = configure;
 });
@@ -180,15 +153,6 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
     exports.PhotoCube = PhotoCube;
 });
 
-define('resources/index',["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    function configure(config) {
-    }
-    exports.configure = configure;
-});
-
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <input value.bind=\"imageText\" value=\"2017_FreddysVR\"/>\n  <photo-cube value=\"hi\" \n              panoramic-set-name.bind=\"imageText\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\"\n              style=\"height: 850px;\">\n  </photo-cube>\n</template>\n"; });
 define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./photo-cube.css\"></require>\n    \n    <div class=\"view-port\" ref=\"ViewPort\"></div>\n</template>\n"; });
 define('text!photocube/photo-cube.css', ['module'], function(module) { module.exports = "photo-cube {\r\n    display: block;\r\n    position: relative;\r\n}\r\n\r\nphoto-cube>div.view-port {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n\r\nphoto-cube>div.view-port>canvas {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n"; });
 //# sourceMappingURL=app-bundle.js.map
