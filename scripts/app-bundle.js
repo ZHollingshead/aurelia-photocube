@@ -77,7 +77,9 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             this.WindowResizeEvent = function () {
                 _this.Camera.aspect = window.innerWidth / window.innerHeight;
                 _this.Camera.updateProjectionMatrix();
-                _this.Renderer.setSize(_this.ViewPort.offsetWidth, _this.ViewPort.offsetHeight);
+                _this.Renderer.setSize(window.innerWidth, window.innerHeight);
+                _this.Renderer.domElement.style.height = '';
+                _this.Renderer.domElement.style.width = '';
             };
         }
         PhotoCube.prototype.created = function () {
@@ -89,12 +91,14 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             this.Cube = new THREE.BoxGeometry(100, 100, 100);
         };
         PhotoCube.prototype.bind = function () {
+            this.Renderer.setSize(window.innerWidth, window.innerHeight);
+            this.Renderer.domElement.style.height = '';
+            this.Renderer.domElement.style.width = '';
+            this.ViewPort.appendChild(this.Renderer.domElement);
+            this.Camera.target = new THREE.Vector3(0, 0, 0);
         };
         PhotoCube.prototype.attached = function () {
             var _this = this;
-            this.Renderer.setSize(this.ViewPort.offsetWidth, this.ViewPort.offsetHeight);
-            this.ViewPort.appendChild(this.Renderer.domElement);
-            this.Camera.target = new THREE.Vector3(0, 0, 0);
             var textureCube = this.LoadCubeTextures();
             this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: 0.5 });
             this.Mesh = new THREE.Mesh(this.Cube, this.Material);
@@ -154,5 +158,5 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
 });
 
 define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./photo-cube.css\"></require>\n    \n    <div class=\"view-port\" ref=\"ViewPort\"></div>\n</template>\n"; });
-define('text!photocube/photo-cube.css', ['module'], function(module) { module.exports = "photo-cube {\r\n    display: block;\r\n    position: relative;\r\n}\r\n\r\nphoto-cube>div.view-port {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n\r\nphoto-cube>div.view-port>canvas {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n"; });
+define('text!photocube/photo-cube.css', ['module'], function(module) { module.exports = "photo-cube>div.view-port {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n\r\nphoto-cube>div.view-port>canvas {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n"; });
 //# sourceMappingURL=app-bundle.js.map
