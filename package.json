@@ -1,44 +1,96 @@
 {
   "name": "aurelia-photocube",
-  "description": "An Aurelia client application.",
-  "version": "0.1.0",
-  "repository": {
-    "type": "???",
-    "url": "???"
-  },
+  "version": "0.0.2",
+  "description": "A panoramic cube map viewer.",
+  "keywords": [
+    "aurelia",
+    "components"
+  ],
   "license": "MIT",
+  "author": "",
+  "main": "dist/commonjs/index.js",
+  "typings": "dist/commonjs/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZHollingshead/aurelia-photocube"
+  },
+  "scripts": {
+    "prebuild:amd": "cross-env rimraf dist/amd",
+    "build:amd": "cross-env tsc --project tsconfig.build.json --outDir dist/amd --module amd",
+    "postbuild:amd": "cross-env copyfiles --up 1 src/**/*.html src/**/*.css dist/amd",
+    "prebuild:commonjs": "cross-env rimraf dist/commonjs",
+    "build:commonjs": "cross-env tsc --project tsconfig.build.json --outDir dist/commonjs --module commonjs",
+    "postbuild:commonjs": "cross-env copyfiles --up 1 src/**/*.html src/**/*.css dist/commonjs",
+    "prebuild:es2015": "cross-env rimraf dist/es2015",
+    "build:es2015": "cross-env tsc --project tsconfig.build.json --outDir dist/es2015 --module es2015",
+    "postbuild:es2015": "cross-env copyfiles --up 1 src/**/*.html src/**/*.css dist/es2015",
+    "prebuild:system": "cross-env rimraf dist/system",
+    "build:system": "cross-env tsc --project tsconfig.build.json --outDir dist/system --module system",
+    "postbuild:system": "cross-env copyfiles --up 1 src/**/*.html src/**/*.css dist/system",
+    "prebuild": "cross-env rimraf dist",
+    "build": "concurrently \"npm run build:amd\" \"npm run build:commonjs\" \"npm run build:es2015\" \"npm run build:system\""
+  },
+  "jspm": {
+    "registry": "npm",
+    "jspmPackage": true,
+    "main": "index",
+    "format": "amd",
+    "directories": {
+      "dist": "dist/amd"
+    },
+    "peerDependencies": {
+      "aurelia-binding": "^1.0.0",
+      "aurelia-dependency-injection": "^1.0.0",
+      "aurelia-logging": "^1.0.0",
+      "aurelia-pal": "^1.0.0",
+      "aurelia-task-queue": "^1.0.0",
+      "aurelia-templating": "^1.0.0",
+      "aurelia-loader": "^1.0.0",
+      "aurelia-templating-binding": "^1.0.0",
+      "aurelia-framework": "^1.0.0",
+      "aurelia-metadata": "^1.0.0",
+      "aurelia-path": "^1.0.0"
+    },
+    "dependencies": {
+      "aurelia-binding": "^1.0.0",
+      "aurelia-dependency-injection": "^1.0.0",
+      "aurelia-logging": "^1.0.0",
+      "aurelia-pal": "^1.0.0",
+      "aurelia-task-queue": "^1.0.0",
+      "aurelia-templating": "^1.0.0",
+      "aurelia-loader": "^1.0.0",
+      "aurelia-templating-binding": "^1.0.0",
+      "aurelia-framework": "^1.0.0",
+      "aurelia-metadata": "^1.0.0",
+      "aurelia-path": "^1.0.0",
+      "three": "^0.84.0"
+    },
+    "devDependencies": {}
+  },
   "dependencies": {
-    "aurelia-animator-css": "^1.0.0",
-    "aurelia-bootstrapper": "^1.0.0",
-    "bluebird": "^3.4.1",
-    "requirejs": "^2.3.2",
-    "text": "github:requirejs/text#latest",
+    "aurelia-framework": "^1.0.0",
     "three": "^0.84.0"
   },
-  "peerDependencies": {},
   "devDependencies": {
-    "aurelia-cli": "^0.24.0",
+    "aurelia-bootstrapper": "^1.0.0",
+    "aurelia-pal-browser": "^1.0.0",
+    "aurelia-polyfills": "^1.1.0",
     "aurelia-testing": "^1.0.0-beta.2.0.0",
-    "aurelia-tools": "^0.2.2",
-    "browser-sync": "^2.13.0",
-    "connect-history-api-fallback": "^1.2.0",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-changed-in-place": "^2.0.3",
-    "gulp-plumber": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^2.0.0-alpha",
-    "gulp-notify": "^2.2.0",
-    "minimatch": "^3.0.2",
-    "through2": "^2.0.1",
-    "uglify-js": "^2.6.3",
-    "vinyl-fs": "^2.4.3",
-    "event-stream": "^3.3.3",
-    "gulp-typescript": "^2.13.6",
-    "gulp-tslint": "^5.0.0",
-    "tslint": "^3.11.0",
-    "typescript": ">=1.9.0-dev || ^2.0.0",
-    "typings": "^1.3.0",
-    "gulp-postcss": "6.1.1",
-    "autoprefixer": "^6.3.6"
+    "concurrently": "^2.2.0",
+    "copyfiles": "^1.0.0",
+    "cross-env": "^2.0.1",
+    "requirejs": "^2.2.0",
+    "requirejs-text": "^2.0.12",
+    "rimraf": "^2.5.4",
+    "tslint": "^3.15.1",
+    "typescript": "^2.0.0"
+  },
+  "aurelia": {
+    "build": {
+      "resources": []
+    },
+    "documentation": {
+      "articles": []
+    }
   }
 }

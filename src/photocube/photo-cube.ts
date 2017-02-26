@@ -1,8 +1,6 @@
-import THREE = require("three");
+import * as THREE from 'three';
 import { bindable } from 'aurelia-templating';
 import { bindingMode } from 'aurelia-binding';
-import { DOM } from 'aurelia-pal';
-import { inject } from 'aurelia-dependency-injection';
 
 class MouseTracker {
   public mouseDown: boolean = false;
@@ -10,15 +8,11 @@ class MouseTracker {
   public y: number = 0;
   public lat: number = 0;
   public lon: number = 0;
-
-  constructor() { }
 }
 
 class CameraTracker {
   public lat: number = 0;
   public lon: number = 0;
-
-  constructor() { }
 }
 
 export class PhotoCube {
@@ -57,7 +51,7 @@ export class PhotoCube {
 
     this.Renderer.domElement.style.height = '';
     this.Renderer.domElement.style.width = '';
-    
+
     this.ViewPort.appendChild(this.Renderer.domElement);
     this.Camera.target = new THREE.Vector3(0, 0, 0);
   }
@@ -68,35 +62,27 @@ export class PhotoCube {
     this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: 0.5 });
 
     this.Mesh = new THREE.Mesh(this.Cube, this.Material);
-    this.Mesh.scale.x = - 1
+    this.Mesh.scale.x = -1;
 
     this.Scene.add(this.Mesh);
 
-    this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
-    window.addEventListener("mousemove", this.MouseMoveEvent, false);
+    this.ViewPort.addEventListener('mousedown', this.MouseDownEvent, false);
+    window.addEventListener('mousemove', this.MouseMoveEvent, false);
     window.addEventListener( 'resize', this.WindowResizeEvent, false );
-    window.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
+    window.addEventListener('mouseup', () => { this.MouseTracker.mouseDown = false; }, false);
 
     this.RenderLoop();
   }
 
-  public detached() {
-
-  }
-
-  public unbind() {
-
-  }
-
-  panoramicSetPathChanged() {
+  public panoramicSetPathChanged() {
     this.UpdateCubeTextures();
   }
 
-  panoramicImageFormatChanged() {
+  public panoramicImageFormatChanged() {
     this.UpdateCubeTextures();
   }
 
-  panoramicSetNameChanged() {
+  public panoramicSetNameChanged() {
     this.UpdateCubeTextures();
   }
 
@@ -127,16 +113,18 @@ export class PhotoCube {
 
     this.CameraPositions.lon = Math.max(-85, Math.min(85, this.CameraPositions.lon));
 
-    this.Camera.target.x = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.cos(THREE.Math.degToRad(this.CameraPositions.lat));
+    this.Camera.target.x = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) *
+      Math.cos(THREE.Math.degToRad(this.CameraPositions.lat));
     this.Camera.target.y = Math.cos(THREE.Math.degToRad(90 - this.CameraPositions.lon));
-    this.Camera.target.z = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) * Math.sin(THREE.Math.degToRad(this.CameraPositions.lat));
+    this.Camera.target.z = Math.sin(THREE.Math.degToRad(90 - this.CameraPositions.lon)) *
+      Math.sin(THREE.Math.degToRad(this.CameraPositions.lat));
 
     this.Camera.lookAt(this.Camera.target);
 
     this.Renderer.render(this.Scene, this.Camera);
   }
 
-  public MouseDownEvent = (event) => {
+  public MouseDownEvent = (event: any) => {
 
     event.preventDefault();
 
@@ -150,7 +138,7 @@ export class PhotoCube {
 
   }
 
-  public MouseMoveEvent = (event) => {
+  public MouseMoveEvent = (event: any) => {
 
     if (this.MouseTracker.mouseDown) {
       this.CameraPositions.lat = (this.MouseTracker.x - event.clientX) * 0.1 + this.MouseTracker.lat;
@@ -160,12 +148,12 @@ export class PhotoCube {
   }
 
   public WindowResizeEvent = () => {
-			this.Camera.aspect = window.innerWidth / window.innerHeight;
-			this.Camera.updateProjectionMatrix();
-			this.Renderer.setSize( window.innerWidth, window.innerHeight );
+    this.Camera.aspect = window.innerWidth / window.innerHeight;
+    this.Camera.updateProjectionMatrix();
+    this.Renderer.setSize( window.innerWidth, window.innerHeight );
 
-      this.Renderer.domElement.style.height = '';
-      this.Renderer.domElement.style.width = '';
-		}
+    this.Renderer.domElement.style.height = '';
+    this.Renderer.domElement.style.width = '';
+  }
 
 }

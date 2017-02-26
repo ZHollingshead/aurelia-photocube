@@ -1,0 +1,11 @@
+{
+  "name": "aurelia-photocube",
+  "version": "0.0.2",
+  "main": "dist/commonjs/aurelia-ux.js",
+  "moduleType": "node",
+  "dependencies": {
+    "aurelia-binding": "^1.0.1",
+    "aurelia-metadata": "^1.0.0",
+    "aurelia-templating": "^1.0.0"
+  }
+}
