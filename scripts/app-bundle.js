@@ -114,13 +114,13 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             this.Renderer.setSize(window.innerWidth, window.innerHeight);
             this.ViewPort.appendChild(this.Renderer.domElement);
             this.Camera.target = new THREE.Vector3(0, 0, 0);
-            this.Cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
         };
         PhotoCube.prototype.attached = function () {
             var _this = this;
             var textureCube = this.LoadCubeTextures();
-            this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
+            this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: 0.5 });
             this.Mesh = new THREE.Mesh(this.Cube, this.Material);
+            this.Mesh.scale.x = -1;
             this.Scene.add(this.Mesh);
             this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
             document.addEventListener("mousemove", this.MouseMoveEvent, false);
@@ -183,5 +183,5 @@ define('resources/index',["require", "exports"], function (require, exports) {
 });
 
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <input value.bind=\"imageText\" value=\"2017_FreddysVR\"/>\n  <photo-cube value=\"hi\" \n              panoramic-set-name.bind=\"imageText\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\">\n  </photo-cube>\n</template>\n"; });
-define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <section>\n        <h2>aurelia cube</h2>\n        <div ref=\"ViewPort\" style=\"width: 500px; height: 400px;\"></div>\n    </section>\n\n</template>\n"; });
+define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <div ref=\"ViewPort\"></div>\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map

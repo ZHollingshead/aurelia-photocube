@@ -56,15 +56,15 @@ export class PhotoCube {
     this.Renderer.setSize(window.innerWidth, window.innerHeight);
     this.ViewPort.appendChild(this.Renderer.domElement);
     this.Camera.target = new THREE.Vector3(0, 0, 0);
-    this.Cube.applyMatrix(new THREE.Matrix4().makeScale(1, 1, -1));
   }
 
   public attached() {
     let textureCube = this.LoadCubeTextures();
 
-    this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
+    this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: 0.5 });
 
     this.Mesh = new THREE.Mesh(this.Cube, this.Material);
+    this.Mesh.scale.x = - 1
 
     this.Scene.add(this.Mesh);
 
