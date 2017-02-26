@@ -24,10 +24,10 @@ class CameraTracker {
 export class PhotoCube {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public panoramicSetName: String;
-  
+
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public panoramicSetPath: String;
-  
+
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public panoramicImageFormat: String;
 
@@ -60,12 +60,13 @@ export class PhotoCube {
   }
 
   public attached() {
-    var textureCube = this.LoadCubeTextures();
+    let textureCube = this.LoadCubeTextures();
 
-    var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
+    this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
 
-    var sphereMesh = new THREE.Mesh(this.Cube, material);
-    this.Scene.add(sphereMesh);
+    this.Mesh = new THREE.Mesh(this.Cube, this.Material);
+
+    this.Scene.add(this.Mesh);
 
     this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
     document.addEventListener("mousemove", this.MouseMoveEvent, false);
@@ -80,6 +81,25 @@ export class PhotoCube {
 
   public unbind() {
 
+  }
+
+  panoramicSetPathChanged() {
+    this.UpdateCubeTextures();
+  }
+
+  panoramicImageFormatChanged() {
+    this.UpdateCubeTextures();
+  }
+
+  panoramicSetNameChanged() {
+    this.UpdateCubeTextures();
+  }
+
+  public UpdateCubeTextures() {
+    let textureCube = this.LoadCubeTextures();
+
+    this.Scene.children[0].material.envMap = textureCube;
+    this.Scene.children[0].material.needsUpdate = true;
   }
 
   public LoadCubeTextures() {

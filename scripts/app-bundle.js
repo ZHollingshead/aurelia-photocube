@@ -119,9 +119,9 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
         PhotoCube.prototype.attached = function () {
             var _this = this;
             var textureCube = this.LoadCubeTextures();
-            var material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
-            var sphereMesh = new THREE.Mesh(this.Cube, material);
-            this.Scene.add(sphereMesh);
+            this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: true });
+            this.Mesh = new THREE.Mesh(this.Cube, this.Material);
+            this.Scene.add(this.Mesh);
             this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
             document.addEventListener("mousemove", this.MouseMoveEvent, false);
             document.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
@@ -130,6 +130,20 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
         PhotoCube.prototype.detached = function () {
         };
         PhotoCube.prototype.unbind = function () {
+        };
+        PhotoCube.prototype.panoramicSetPathChanged = function () {
+            this.UpdateCubeTextures();
+        };
+        PhotoCube.prototype.panoramicImageFormatChanged = function () {
+            this.UpdateCubeTextures();
+        };
+        PhotoCube.prototype.panoramicSetNameChanged = function () {
+            this.UpdateCubeTextures();
+        };
+        PhotoCube.prototype.UpdateCubeTextures = function () {
+            var textureCube = this.LoadCubeTextures();
+            this.Scene.children[0].material.envMap = textureCube;
+            this.Scene.children[0].material.needsUpdate = true;
         };
         PhotoCube.prototype.LoadCubeTextures = function () {
             var loader = new THREE.CubeTextureLoader();
