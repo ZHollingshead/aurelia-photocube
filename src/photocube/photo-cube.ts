@@ -54,6 +54,10 @@ export class PhotoCube {
 
   public bind() {
     this.Renderer.setSize(window.innerWidth, window.innerHeight);
+
+    this.Renderer.domElement.style.height = '';
+    this.Renderer.domElement.style.width = '';
+    
     this.ViewPort.appendChild(this.Renderer.domElement);
     this.Camera.target = new THREE.Vector3(0, 0, 0);
   }
@@ -159,6 +163,9 @@ export class PhotoCube {
 			this.Camera.aspect = window.innerWidth / window.innerHeight;
 			this.Camera.updateProjectionMatrix();
 			this.Renderer.setSize( window.innerWidth, window.innerHeight );
+
+      this.Renderer.domElement.style.height = '';
+      this.Renderer.domElement.style.width = '';
 		}
 
 }

@@ -105,6 +105,8 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
                 _this.Camera.aspect = window.innerWidth / window.innerHeight;
                 _this.Camera.updateProjectionMatrix();
                 _this.Renderer.setSize(window.innerWidth, window.innerHeight);
+                _this.Renderer.domElement.style.height = '';
+                _this.Renderer.domElement.style.width = '';
             };
         }
         PhotoCube.prototype.created = function () {
@@ -117,6 +119,8 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
         };
         PhotoCube.prototype.bind = function () {
             this.Renderer.setSize(window.innerWidth, window.innerHeight);
+            this.Renderer.domElement.style.height = '';
+            this.Renderer.domElement.style.width = '';
             this.ViewPort.appendChild(this.Renderer.domElement);
             this.Camera.target = new THREE.Vector3(0, 0, 0);
         };
@@ -188,7 +192,7 @@ define('resources/index',["require", "exports"], function (require, exports) {
     exports.configure = configure;
 });
 
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <input value.bind=\"imageText\" value=\"2017_FreddysVR\"/>\n  <photo-cube value=\"hi\" \n              panoramic-set-name.bind=\"imageText\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\">\n  </photo-cube>\n</template>\n"; });
-define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./photo-cube.css\"></require>\n    \n    <div ref=\"ViewPort\"></div>\n</template>\n"; });
-define('text!photocube/photo-cube.css', ['module'], function(module) { module.exports = ""; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <input value.bind=\"imageText\" value=\"2017_FreddysVR\"/>\n  <photo-cube value=\"hi\" \n              panoramic-set-name.bind=\"imageText\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\"\n              style=\"height: 850px;\">\n  </photo-cube>\n</template>\n"; });
+define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./photo-cube.css\"></require>\n    \n    <div class=\"view-port\" ref=\"ViewPort\"></div>\n</template>\n"; });
+define('text!photocube/photo-cube.css', ['module'], function(module) { module.exports = "photo-cube>div.view-port {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n\r\nphoto-cube>div.view-port>canvas {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n"; });
 //# sourceMappingURL=app-bundle.js.map
