@@ -53,16 +53,15 @@ export class PhotoCube {
   }
 
   public bind() {
-    this.Renderer.setSize(window.innerWidth, window.innerHeight);
-
-    this.Renderer.domElement.style.height = '';
-    this.Renderer.domElement.style.width = '';
-    
-    this.ViewPort.appendChild(this.Renderer.domElement);
-    this.Camera.target = new THREE.Vector3(0, 0, 0);
   }
 
   public attached() {
+
+    this.Renderer.setSize(this.ViewPort.offsetWidth, this.ViewPort.offsetHeight);
+    
+    this.ViewPort.appendChild(this.Renderer.domElement);
+    this.Camera.target = new THREE.Vector3(0, 0, 0);
+
     let textureCube = this.LoadCubeTextures();
 
     this.Material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: textureCube, overdraw: 0.5 });
@@ -162,10 +161,7 @@ export class PhotoCube {
   public WindowResizeEvent = () => {
 			this.Camera.aspect = window.innerWidth / window.innerHeight;
 			this.Camera.updateProjectionMatrix();
-			this.Renderer.setSize( window.innerWidth, window.innerHeight );
-
-      this.Renderer.domElement.style.height = '';
-      this.Renderer.domElement.style.width = '';
+      this.Renderer.setSize(this.ViewPort.offsetWidth, this.ViewPort.offsetHeight);
 		}
 
 }
