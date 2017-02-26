@@ -69,8 +69,9 @@ export class PhotoCube {
     this.Scene.add(this.Mesh);
 
     this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
-    document.addEventListener("mousemove", this.MouseMoveEvent, false);
-    document.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
+    window.addEventListener("mousemove", this.MouseMoveEvent, false);
+    window.addEventListener( 'resize', this.WindowResizeEvent, false );
+    window.addEventListener("mouseup", () => { this.MouseTracker.mouseDown = false; }, false);
 
     this.RenderLoop();
   }
@@ -153,5 +154,11 @@ export class PhotoCube {
     }
 
   }
+
+  public WindowResizeEvent = () => {
+			this.Camera.aspect = window.innerWidth / window.innerHeight;
+			this.Camera.updateProjectionMatrix();
+			this.Renderer.setSize( window.innerWidth, window.innerHeight );
+		}
 
 }

@@ -101,6 +101,11 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
                     _this.CameraPositions.lon = (event.clientY - _this.MouseTracker.y) * 0.1 + _this.MouseTracker.lon;
                 }
             };
+            this.WindowResizeEvent = function () {
+                _this.Camera.aspect = window.innerWidth / window.innerHeight;
+                _this.Camera.updateProjectionMatrix();
+                _this.Renderer.setSize(window.innerWidth, window.innerHeight);
+            };
         }
         PhotoCube.prototype.created = function () {
             this.MouseTracker = new MouseTracker();
@@ -123,8 +128,9 @@ define('photocube/photo-cube',["require", "exports", "three", "aurelia-templatin
             this.Mesh.scale.x = -1;
             this.Scene.add(this.Mesh);
             this.ViewPort.addEventListener("mousedown", this.MouseDownEvent, false);
-            document.addEventListener("mousemove", this.MouseMoveEvent, false);
-            document.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
+            window.addEventListener("mousemove", this.MouseMoveEvent, false);
+            window.addEventListener('resize', this.WindowResizeEvent, false);
+            window.addEventListener("mouseup", function () { _this.MouseTracker.mouseDown = false; }, false);
             this.RenderLoop();
         };
         PhotoCube.prototype.detached = function () {
@@ -183,5 +189,6 @@ define('resources/index',["require", "exports"], function (require, exports) {
 });
 
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <input value.bind=\"imageText\" value=\"2017_FreddysVR\"/>\n  <photo-cube value=\"hi\" \n              panoramic-set-name.bind=\"imageText\"\n              panoramic-set-path=\"images\"\n              panoramic-image-format=\"jpg\">\n  </photo-cube>\n</template>\n"; });
-define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <div ref=\"ViewPort\"></div>\n</template>\n"; });
+define('text!photocube/photo-cube.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./photo-cube.css\"></require>\n    \n    <div ref=\"ViewPort\"></div>\n</template>\n"; });
+define('text!photocube/photo-cube.css', ['module'], function(module) { module.exports = ""; });
 //# sourceMappingURL=app-bundle.js.map
